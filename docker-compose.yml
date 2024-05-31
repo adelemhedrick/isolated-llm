@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  api-server:
+    build: ./api-server
+    volumes:
+      - type: volume
+        source: uploads
+        target: /app/uploads
+    networks:
+      - app-network
+    ports:
+      - "5000:5000"  # Expose the API server on port 5000
+    depends_on:
+      - ocr-service
+
+  ocr-service:
+    build: ./ocr-service
+    volumes:
+      - type: volume
+        source: uploads
+        target: /app/uploads
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  uploads:
